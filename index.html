@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MULTIPANE</title>
+<meta name="theme-color" content="#b8611a"><meta name="mobile-web-app-capable" content="yes">
+<style>
+:root{--bg:#fff7ea;--card:#fff;--tx:#3a2412;--mut:#8a7360;--ac:#b8611a;--ac2:#fff;--ac3:#e9a14a;--bd:#f0dfc6;--ok:#2e7d32;--sh:0 2px 10px rgba(120,70,20,.10);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b130c;--card:#2a1e14;--tx:#f6e9d8;--mut:#bda68c;--ac:#e8a04c;--ac2:#1b130c;--ac3:#c9782a;--bd:#46341f;--ok:#7bd37f;--sh:0 2px 10px rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{--bg:#1b130c;--card:#2a1e14;--tx:#f6e9d8;--mut:#bda68c;--ac:#e8a04c;--ac2:#1b130c;--ac3:#c9782a;--bd:#46341f;--ok:#7bd37f;--sh:0 2px 10px rgba(0,0,0,.4)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+#app{max-width:480px;margin:0 auto;padding:14px 14px 28px}
+h1{font-size:1.4rem;margin:.2em 0}h2{font-size:1.02rem;margin:1.2em 0 .5em;color:var(--ac)}h2.sec{font-size:1.25rem;margin:1.1em 0 .5em}
+.mut,.small{color:var(--mut)}.small{font-size:.85rem}
+a{color:inherit;text-decoration:none}
+.hero{display:flex;align-items:center;gap:14px;padding:16px;border-radius:22px;color:#fff;background:linear-gradient(135deg,var(--ac3),var(--ac));box-shadow:var(--sh)}
+.hero h1{margin:0;font-size:1.65rem;letter-spacing:.14em;font-weight:900}.hero p{margin:2px 0 0;opacity:.92;font-size:.9rem}
+.logo{width:62px;height:62px;flex:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}.logo svg{width:100%;height:100%}
+.card{display:block;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:12px 14px;margin:0 0 9px;box-shadow:var(--sh)}
+.card b{display:block}.card small{color:var(--mut)}
+.card.add{border:2px dashed var(--ac);text-align:center;color:var(--ac);font-weight:800;box-shadow:none}
+.card.hl{background:linear-gradient(135deg,var(--ac3),var(--ac));color:#fff;font-weight:800;border:0;margin-top:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.gb{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:14px 8px;min-height:92px;text-align:center;font-weight:800;font-size:.76rem;display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;box-shadow:var(--sh)}
+.gb i{font-style:normal;font-size:1.7rem}
+.btn{width:100%;min-height:52px;border:0;border-radius:16px;background:linear-gradient(135deg,var(--ac3),var(--ac));color:#fff;font:800 1rem inherit;font-family:inherit;margin:6px 0;cursor:pointer;box-shadow:var(--sh)}
+.btn.sec{background:transparent;color:var(--ac);border:2px solid var(--ac);box-shadow:none}.btn:disabled{opacity:.4}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{min-height:46px;padding:0 16px;border-radius:23px;border:2px solid var(--ac);background:transparent;color:var(--ac);font:800 .95rem inherit;font-family:inherit}
+.chip.on{background:var(--ac);color:var(--ac2)}
+.ing{display:flex;gap:12px;align-items:center;padding:11px 4px;border-bottom:1px solid var(--bd);min-height:48px}
+.ing input{width:26px;height:26px;flex:none;accent-color:var(--ac)}
+.ing input:checked+span{text-decoration:line-through;color:var(--mut)}
+label.l{display:block;font-weight:800;margin:14px 0 5px}
+input[type=text],input[type=search],input[type=number],input[type=time],select,textarea{width:100%;font:inherit;padding:11px;border-radius:14px;border:1px solid var(--bd);background:var(--card);color:var(--tx)}
+textarea{min-height:90px}
+.back{display:inline-block;padding:8px 0;color:var(--ac);font-weight:800}
+.bar{position:sticky;bottom:0;padding:12px 0 6px;background:linear-gradient(transparent,var(--bg) 35%)}
+.row{display:flex;gap:8px}.row .btn{width:auto;flex:none;padding:0 18px;margin:0}
+.row2{display:flex;gap:8px}.row2 .btn{margin:0}
+.x{border:0;background:none;color:var(--ac);font:700 .95rem inherit;font-family:inherit;min-height:44px;padding:0 10px 0 0}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:.95rem}
+th,td{padding:10px 6px;border:1px solid var(--bd);text-align:center}th{background:var(--ac);color:var(--ac2)}
+.runbox{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:16px 12px;text-align:center;margin:8px 0;box-shadow:var(--sh)}
+.ringw{position:relative;width:min(72vw,290px);margin:8px auto}.ringw svg{width:100%;display:block}
+.rb{fill:none;stroke:var(--bd);stroke-width:12}.rf{fill:none;stroke:var(--ac);stroke-width:12;stroke-linecap:round;stroke-dasharray:553;stroke-dashoffset:0}
+.rin{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 24px}
+.lbl{font-size:.7rem;letter-spacing:.14em;color:var(--mut)}
+.phase{font-size:1.2rem;font-weight:800;margin:2px 0;line-height:1.15}
+.cd{font-size:2.9rem;font-weight:900;font-variant-numeric:tabular-nums;color:var(--ac);line-height:1.1}
+.bar0{height:10px;background:var(--bd);border-radius:6px;margin:12px 0 8px;overflow:hidden}.bar0 i{display:block;height:100%;background:linear-gradient(90deg,var(--ac3),var(--ac));width:0}
+.clock{font-size:2.8rem;font-weight:900;text-align:center;font-variant-numeric:tabular-nums;color:var(--ac)}
+.res{border-radius:16px;padding:14px;margin-top:14px;background:var(--card);border:2px solid var(--ac)}
+.res.err{border-color:#c62828}.res b{color:var(--ac)}
+.how p,.how li{margin:.4em 0}.how ul,.how ol{padding-left:1.2em}
+.hi{font-size:.95rem}.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:20px;font-weight:700;z-index:9}
+details{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:10px 12px;margin:12px 0}summary{font-weight:800}
+.ing input[type=text]{width:auto;flex:1;height:auto;min-width:0}.ing .x{flex:none}
+.ph{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.th{position:relative;width:88px;height:88px}
+.th img{width:100%;height:100%;object-fit:cover;border-radius:12px;border:1px solid var(--bd)}
+.th button{position:absolute;top:-6px;right:-6px;width:26px;height:26px;border-radius:50%;border:0;background:#c62828;color:#fff;font-weight:900}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:20;display:flex;align-items:center;justify-content:center;padding:12px}.ov img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
+</style></head><body><div id="app"></div>
+<script>
+const $=s=>document.querySelector(s),mem={};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?(k in mem?mem[k]:d):JSON.parse(v)}catch(e){return k in mem?mem[k]:d}},set(k,v){mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
+const CY=["","Normal","Francês ou d'Água","Integral","Rápido","Pão Doce","Ultra Rápido I","Ultra Rápido II","Massa","Geléia","Bolo","Sanduíche","Assar"];
+/* Tabela de ciclos (planilha do usuário, ciclos.xlsx): segundos por coluna [Mistura, Descanso, Mistura, Descanso, Mistura rápida, Descanso, Assa]; [opção I (450/600 g), opção II (900/1200 g)]; 0 = sem etapa */
+const TB={1:[[540,1200,840,1500,30,2700,3600],[600,1200,900,1500,30,2700,3900]],2:[[960,2400,960,1140,30,1800,3000],[1080,2400,1320,1800,30,3000,4200]],3:[[540,1500,1080,2100,0,4200,3300],[600,1500,1200,2100,0,4200,3600]],4:[[420,300,480,0,0,0,4800]],5:[[600,300,1200,1800,30,3300,3000],[600,300,1200,1800,30,3300,3300]],6:[[720,0,0,0,0,660,2100]],7:[[540,0,0,0,0,540,2400]],8:[[1200,0,0,1800,0,2400,0]],9:[[0,900,2700,0,0,0,1200]],10:[[600,300,1200,1800,0,2100,4200]],11:[[900,2400,300,1500,30,2400,3300]],12:[[0,0,0,0,0,0,3600]]};
+const PL=["Mistura","Descanso","Mistura","Descanso","Mistura rápida","Descanso","Assa"];
+const opt=l=>/450|600/.test(l)?'I':'II',row=(c,o)=>TB[c][o=='I'||!TB[c][1]?0:1],tot=(c,o)=>Math.floor(row(c,o).reduce((a,b)=>a+b,0)/60);
+const num=q=>q.split(' ').reduce((a,t)=>a+(t=='½'?.5:t=='¼'?.25:t=='¾'?.75:t.includes('/')?t.split('/')[0]/t.split('/')[1]:(+t||0)),0);
+const X=s=>s.replace(/^([\d½¼¾\/ ]+?) (cs|cc|cp) /,(m,q,u)=>{const sg=num(q.trim())<=1.5;return q+' '+({cs:sg?'colher (sopa)':'colheres (sopa)',cc:sg?'colher (chá)':'colheres (chá)',cp:sg?'copo':'copos'})[u]+' de '}).replace(/\bfb\b/,'fermento biológico seco instantâneo').replace(/\bft\b/,'farinha de trigo especial');
+/* Formato: Nome|ciclos|peso:ing;ing@peso:ing|pré-preparo|passos extras¦passos */
+const RAW=`
+#Pães Tradicionais
+Pão Rápido|10q|900g:2 cp água morna;3 cs óleo ou margarina;2 cs leite em pó;3 cs açúcar;2 cc sal;4 ½ cp farinha de trigo;2 cc fb
+Pão Branco Tradicional|1,11|450g:2/3 cp água;1 cs margarina;1 cc sal;1 cs leite em pó;1 cs açúcar;2 cp ft;1 cc fb@600g:1 cp água;1 cs margarina;1 ½ cc sal;1 cs leite em pó;2 cs açúcar;3 cp ft;2 cc fb@900g:1 1/3 cp água;1 ½ cs margarina;1 ½ cc sal;4 cs leite em pó;2 cs açúcar;4 cp ft;2 cc fb
+Pão Básico sem Açúcar|1|600g:1 cp leite com 1 ovo (coloque primeiro o ovo e complete com leite morno);1 cc sal;2 cs óleo vegetal;2 cs adoçante dietético para culinária forno e fogão;3 cp ft;2 cc fb
+Pão de Leite|1,11|450g:3/4 cp leite com 1 ovo (ovo no copo, complete com leite);1 cs creme de leite sem soro;1 cc sal;1 cs açúcar;2 cp ft;1 cc fb@600g:1 cp leite com 1 ovo (ovo no copo, complete com leite);1 ½ cs creme de leite sem soro;1 ½ cc sal;2 cs açúcar;3 cp ft;2 cc fb@900g:1 1/3 cp leite com 1 ovo (ovo no copo, complete com leite);2 cs creme de leite sem soro;1 ½ cc sal;2 cs açúcar;4 cp ft;2 cc fb
+Pão Branco de Manteiga|1,11|450g:3/4 cp leite com 1 ovo (ovo no copo, complete com leite);1 cs manteiga;1 ½ cc sal;1 cs açúcar;2 cp ft;1 cc fb@600g:1 cp leite com 1 ovo (ovo no copo, complete com leite);1 ½ cs manteiga;1 ½ cc sal;2 cs açúcar;3 cp ft;2 cc fb@900g:1 1/3 cp leite com 1 ovo (ovo no copo, complete com leite);2 cs manteiga;1 ½ cc sal;2 cs açúcar;4 cp ft;2 cc fb
+Pão Francês|2|450g:3/4 cp água;1 cs azeite de oliva;1 cc sal;1 cs açúcar;2 cp ft;1 cc fb@600g:1 cp água;1 cs azeite de oliva;1 ½ cc sal;1 ½ cs açúcar;3 cp ft;2 cc fb@900g:1 1/3 cp água;1 ½ cs azeite de oliva;1 ½ cc sal;2 cs açúcar;4 cp ft;2 cc fb
+Pão Ultra Rápido I|6|600g:1 cp água morna;2 cs açúcar;2 cs leite em pó (opcional);2 cs margarina ou óleo;1 cc sal;3 cp farinha de trigo;1 cs fb||Para melhor resultado, escolha a cor da casca "Escura".¦Nos primeiros 6 min pode abrir a tampa: a massa deve ser uma bola homogênea. Se dura, 1 colher (sopa) de água; se mole, um pouco mais de trigo. Feche e não abra mais.
+Pão Ultra Rápido II|7|900g:2 cp água morna;3 cs açúcar;3 cs leite em pó (opcional);3 cs margarina ou óleo;2 cc sal;5 cp farinha de trigo;2 cs fb||Para melhor resultado, escolha a cor da casca "Escura".¦Nos primeiros 6 min pode abrir a tampa: a massa deve ser uma bola homogênea. Se dura, 1 colher (sopa) de água; se mole, um pouco mais de trigo. Feche e não abra mais.
+Pão Colonial|1,11|600g:1 cp leite com 1 ovo (ovo no copo, complete com leite);1 cs margarina ou manteiga;1 ½ cc sal;2 cs açúcar;3 cp ft;2 cc fb@900g:1 1/3 cp leite com 1 ovo (ovo no copo, complete com leite);1 ½ cs margarina ou manteiga;1 ½ cc sal;2 cs açúcar;4 cp ft;2 cc fb
+#Pães Especiais
+Trança Recheada com Peito de Peru e Provolone|1|900g:1 ovo;1 cp leite (ou 1 copo de água com 3 colheres (sopa) de leite em pó);2 cs manteiga, margarina ou óleo;1 ½ cc sal;2 cs açúcar;3 cp farinha de trigo;1 ½ cs fb;150 g de peito de peru fatiado (recheio - reservar);150 g de queijo provolone fatiado ou ralado grosso (recheio - reservar)||Após o bip, deixe a panificadora sovar a massa.¦Terminada a sova, retire a forma e a massa, remova o batedor e divida a massa em 2 porções.¦Em superfície untada ou enfarinhada, abra 2 retângulos, distribua o recheio (reserve um pouco de queijo) e enrole como rocambole.¦Enrole os dois rocamboles formando uma trança.¦Coloque na panificadora, polvilhe o queijo reservado e deixe completar o ciclo.
+Trança de Frutas|1|900g:1 1/3 cp água;1 ovo;4 cs manteiga ou margarina;1 ½ cc sal;8 cs açúcar;1 cc essência de baunilha;2 cs leite em pó;4 cp farinha de trigo;2 cc fb;1 ½ cp frutas cristalizadas (recheio - reservar);1 cs essência de panetone (opcional - reservar)||Após o bip, deixe a panificadora sovar a massa.¦Terminada a sova, retire a forma e a massa, remova o batedor e divida em 2 porções.¦Em superfície untada ou enfarinhada, abra 2 retângulos, distribua as frutas e enrole como rocambole.¦Enrole os dois rocamboles formando uma trança, coloque na forma e recoloque-a na panificadora.¦Feche a tampa e deixe completar o ciclo.
+Pão de Cenoura|1,11|450g:1/3 cp água;1 cs manteiga;1 cc sal;3 cs cenoura ralada;1 ½ cs açúcar;2 cp ft;1 cc fb@600g:1 cp água;1 cs manteiga;1 ½ cc sal;4 cs cenoura ralada;2 cs açúcar;3 cp ft;2 cc fb@900g:1 1/3 cp água;1 ½ cs manteiga;1 ½ cc sal;5 cs cenoura ralada;3 cs açúcar;4 cp ft;2 cc fb
+Pão de Laranja|1,11|450g:1/3 cp polpa de laranja;1 cs margarina;1 ½ cc sal;1 cs açúcar;2 cs leite em pó;2 cp ft;1 cc fb@600g:1 cp polpa de laranja;1 cs margarina;1 ½ cc sal;2 cs açúcar;2 cs leite em pó;3 cp ft;2 cc fb@900g:1 1/3 cp polpa de laranja;1 ½ cs margarina;1 ½ cc sal;2 cs açúcar;4 cs leite em pó;4 cp ft;2 cc fb
+Pão de Goiaba|1|900g:1 1/3 cp água com 3 ovos (ovos primeiro, complete com água);2 cc sal;2 cs leite em pó (opcional);2 cs açúcar;4 cs manteiga;4 cp farinha de trigo;2 ½ cc fermento seco;1 cp goiabada (reservar)||Corte a goiabada em cubinhos e passe na farinha de trigo.¦Após o bip, espere a massa bater cerca de 5 min, abra a tampa e adicione a goiabada.¦Feche a tampa; a panificadora continua o preparo.
+Pão de Iogurte|1,11|600g:½ cp água;½ cp iogurte natural;1 cs margarina;1 ½ cc sal;1 cs açúcar;1 cs leite em pó;2 cp ft;2 cc fb
+Pão de Maçã e Canela|1,11|600g:1 cp suco de maçã;1 cs margarina;1 ½ cc sal;2 cs açúcar mascavo;1 cc canela em pó;3 cp ft;2 cc fb@900g:1 1/3 cp suco de maçã;1 ½ cs margarina;1 ½ cc sal;2 cs açúcar mascavo;1 ½ cc canela em pó;4 cp ft;2 cc fb
+Pão de Café|5|900g:1 1/3 cp água com 1 ovo (ovo no copo, complete com água);2 ½ cs margarina;2 ½ cs café solúvel;1 cc sal;2 cs mel;4 cp farinha;2 cc fb
+Pão Doce de Canela e Aveia|5|600g:1 cp leite com 1 ovo batido (ovo no copo, complete com leite);3 cs manteiga ou margarina;½ cp açúcar;½ cc sal;1 cp aveia;1 cc canela em pó;3 ½ cp farinha de trigo;2 cc fb
+Pão de Arroz|1|900g:2 ovos;2 cp leite morno;½ cp óleo;½ cp queijo parmesão ralado;1 ½ cc sal;1 cs açúcar;½ cp arroz cozido;orégano (opcional);4 cp farinha de trigo;3 cc fb|No liquidificador, bata por 3 min: leite, ovos, queijo ralado, sal, açúcar, óleo e arroz. Coloque essa mistura na forma e acrescente a farinha e o fermento.|Após o término, pincele manteiga ou margarina e polvilhe queijo ralado (opcional).
+Pão de Iogurte Natural com Palmito e Queijo|1|900g:1 1/3 cp iogurte natural com 2 ovos (ovos primeiro, complete com iogurte);2 cs margarina ou manteiga;1 ½ cc sal;2 cs açúcar;2 cs leite em pó;4 cp ft;2 ½ cc fb;1 cp palmito picado (reservar);1 cp queijo provolone picado (reservar)||Após o bip, espere a massa bater cerca de 5 min, abra a tampa e adicione o palmito e o queijo.
+Pão de Beterraba|1|900g:1 1/3 cp leite com 2 ovos (ovos primeiro, complete com leite);1 ½ cs margarina;1 ½ cc sal;2 cs açúcar;1 cp beterraba cozida e amassada;3 ½ cp ft;2 ½ cc fb
+Pão Pesto|1,11|600g:1 cp leite com 1 ovo (ovo no copo, complete com leite);1 ½ cs azeite de oliva;1 ½ cc sal;2 cs açúcar;5 cs manjericão picado;3 cp ft;2 cc fb@900g:1 1/3 cp leite com 1 ovo (ovo no copo, complete com leite);2 cs azeite de oliva;1 ½ cc sal;2 cs açúcar;5 cs manjericão picado;4 cp ft;2 cc fb
+Pão de Batata-baroa (Mandioquinha)|11|900g:1 lata de leite condensado;2 ovos;4 cs margarina;3 cp batata-baroa cozida e espremida ainda quente;½ cc sal;4 cp farinha de trigo;1 cc melhorador para massa de pão;2 cc fb
+Pão de Batata-doce|1|900g:1 1/3 cp leite morno com 2 ovos (ovos primeiro, complete com leite);1 ½ cs margarina ou manteiga;1 ½ cc sal;2 cs açúcar;1 cp batata-doce cozida e amassada;3 cp ft;2 ½ cc fb||Sugestão: quando faltar 1 hora para terminar, pincele a massa com gema de ovo para dourar.
+Pão de Batata|11|900g:1 cp leite com 2 ovos (ovos primeiro, complete com leite);2 cs margarina;1 cp batata cozida e espremida;2 cc sal;2 cs açúcar;3 1/4 cp farinha de trigo;2 3/4 cc fb;1/4 colher (chá) de melhorador (opcional)
+Pão Purê de Batata|1|900g:1 cp leite com 1 ovo (ovo no copo, complete com leite);1 ½ cc sal;2 cs açúcar;2 cs margarina;1 cp purê de batata;3 cp farinha de trigo;2 ½ cc fb
+Pão de Requeijão com Cebolinha|1,11|900g:½ cp água;1 cp requeijão;1 ovo;1 ½ cc sal;2 cs margarina;2 cs açúcar;3 cs cebolinha verde picada;3 3/4 cp ft;2 cc fb
+Pão de Alho|1|600g:3/4 cp água;1 cs açúcar;½ cc sal;½ colher (sopa) de manteiga;2 cs queijo parmesão;½ cc manjericão;½ colher (chá) de pasta de alho;1/4 colher (sopa) de alho picado;2 copos + 1 colher (sopa) de farinha;1 ½ cc fb
+Pão Italiano Temperado|1,2|600g:1 cp água;1 ½ cs azeite de oliva;1 ½ cc sal;2 cs açúcar;4 cs queijo parmesão ralado;1 cs salsa picada;2 cc cebola em flocos;½ colher (chá) de alho em flocos;1 cc manjericão;3 cp ft;2 cc fb
+Pão com Uvas-passa|1|450g:3/4 cp água;1 cs manteiga ou margarina;1 cc sal;1 cs açúcar;2 cp farinha de trigo;1 cc canela em pó;1 cc fb;35 g de uvas-passa e/ou frutas secas (reservar)@600g:1 cp água;1 cs manteiga ou margarina;1 ½ cc sal;3 cs açúcar;3 cp ft;1 cc canela em pó;2 cc fb;50 g de uvas-passa e/ou frutas secas (reservar)@900g:1 1/3 cp água;1 ½ cs manteiga ou margarina;1 ½ cc sal;4 cs açúcar;4 cp ft;1 ½ cc canela em pó;3 cc fb;70 g de uvas-passa e/ou frutas secas (reservar)||Após o bip, abra a tampa e adicione as uvas-passa.¦Feche a tampa e deixe completar o ciclo.
+Pão de Nozes|1|600g:1 cp água com 1 ovo (ovo no copo, complete com água);3 cs margarina;1 ½ cc sal;4 cs açúcar;5 cs açúcar mascavo;1 cc canela em pó;3 cp ft;2 cc fermento seco;3/4 cp nozes picadas (reservar)||Após o bip, abra a tampa e adicione as nozes.¦Feche a tampa e deixe completar o ciclo.
+Pão de Cerveja|1|1200g:2 cp cerveja preta ou amarela;3 cs margarina;2 cs açúcar;1 cc sal;5 cp farinha de trigo;2 cc fermento biológico
+Pão sabor Pizza|1|900g:1 1/3 cp água;2 cs azeite;2 cc sal;2 cc açúcar;2 cs orégano;½ cp queijo parmesão ralado;3 ½ cp farinha;2 cc fermento seco instantâneo;1 cp calabresa (opcional)
+Pão de Calabresa e Queijo|1|900g:1 1/3 cp água;1 cc azeite de oliva;1 ½ cc sal;2 cs açúcar;4 cc leite em pó;3 cc queijo parmesão ralado;½ colher (chá) de alho em flocos;½ colher (chá) de cebola em flocos;½ colher (chá) de orégano;4 cp ft;2 cc fb;½ cp calabresa picada (reservar);½ cp queijo provolone picado (reservar)||Após o bip, abra a tampa e adicione a calabresa e o provolone.¦Feche a tampa e deixe completar o ciclo.
+Pão de Queijo|1,11|600g:1 cp água ou leite;1 ½ cs margarina;1 ½ cc sal;2 cs açúcar;1 pacote de queijo ralado;3 cp farinha de trigo;1 cs orégano;2 cc fb@900g:1 1/3 cp água ou leite;1 ½ cs margarina;1 ½ cc sal;2 cs açúcar;1 pacote de queijo ralado;4 cp farinha de trigo;1 cs orégano;2 cc fermento biológico seco
+Pão de Gergelim|1|600g:½ cp leite;½ cp água;3 cs margarina;2 cc sal;1 cs açúcar;1 cc leite em pó;3 cp farinha de trigo;2 cc fb;½ cp gergelim torrado (reservar)@1200g:1 cp leite;1 cp água;6 cs margarina;3 cc sal;2 cs açúcar;2 cc leite em pó;6 cp farinha de trigo;4 cc fb;½ cp gergelim torrado (reservar)||Após o bip, espere a massa bater cerca de 5 min, abra a tampa e adicione o gergelim torrado.
+Pão de Milho|1|900g:200 ml de leite de coco batido com 2 ovos;3 cs manteiga;2 cs óleo de soja;½ cp fubá;2 cc sal;2 cs leite em pó;4 cs açúcar;2 cs erva-doce (opcional);2 ½ cp farinha de trigo;2 ½ cc fb
+Pão de Requeijão com Azeitonas|1|900g:1 cp água com 1 ovo (ovo primeiro, complete com água);1 cp requeijão;2 cs margarina ou manteiga;1 ½ cc sal;2 cs açúcar;4 cp ft;2 cc fb;½ cp azeitonas verdes picadas (reservar);½ cp azeitonas pretas picadas (reservar)||Após o bip, espere a massa bater cerca de 5 min, abra a tampa e adicione as azeitonas.
+Pão de Iogurte com Tomates Secos e Orégano|1|900g:1 1/3 cp iogurte natural com 2 ovos (ovos primeiro, complete com iogurte);2 cs margarina ou manteiga;1 ½ cc sal;2 cs açúcar;2 cs leite em pó;4 cp ft;2 ½ cc fb;1 cp tomates secos picados (reservar);orégano a gosto (reservar)||Após o bip, espere a massa bater cerca de 5 min, abra a tampa e adicione o tomate seco e o orégano.
+Pão Rápido de Banana|10|600g:1 cp banana amassada;1 cp açúcar mascavo;2 ovos;4 cs óleo;1/4 cp leite;1 cc bicarbonato;1 cc canela em pó;2 cp farinha de trigo;1 cc fermento em pó;½ cp nozes picadas (opcional)
+Pão de Banana, Aveia e Castanha|1|600g:1 cp banana nanica amassada;2 ovos;3 cs margarina;1 cp açúcar mascavo;½ cp castanha-do-pará triturada;1 cp aveia;1 ½ cp farinha de trigo;½ cc sal;1 cc canela em pó;1 cc bicarbonato;1 cs fermento químico
+Pão de Espinafre|1|900g:1 cp água com 2 ovos (ovos no copo, complete com água);1/4 cp espinafre picado;1 ½ cs margarina;2 cs açúcar;1 ½ cc sal;4 cp farinha de trigo;2 ½ cc fb|Bata no liquidificador a água, os ovos e o espinafre até ficar homogêneo.
+Pão de Abóbora e Centeio|1|600g:1 cp abóbora japonesa cozida e amassada;1 ovo;1 cs manteiga;2 cs açúcar;2 cc sal;1 cp farinha de centeio;2 cp farinha de trigo;1 cc melhorador;2 cc fb
+Pão de Ovos|1,11|900g:1 1/3 cp leite com 3 ovos (ovos no copo, complete com leite);3 ½ cs margarina;2 cc sal;2 cs açúcar;4 cp ft;2 cc fb
+Pão de Amendoim|1|900g:1 ½ cp água;3 cs margarina;3 cc sal;4 cc açúcar;3/4 cp amendoim torrado e moído;4 cp ft;2 cc fermento seco
+Pão com Farinha de Arroz e Fubá|1|900g:1 ½ cp leite ou água com 3 colheres (sopa) de leite em pó;2 cs açúcar;1 ½ cc sal;3 cs óleo ou margarina;2 ovos;2 cp farinha de arroz;2 cp fubá de milho;2 cc fb;1 cs erva-doce (opcional)
+Pão de Nozes e Cereja|1|900g:1 1/3 cp leite com 2 ovos (ovos no copo, complete com leite);5 cs margarina;2 cc sal;5 cs açúcar;1 cs raspas de casca de limão;4 cp ft;2 cc fermento seco;3 cs cerejas em calda picadas (reservar);3 cs nozes picadas (reservar)||Após o bip, abra a tampa e adicione os ingredientes reservados.
+Broa de Fubá|11|450g:1 cp leite integral;1/4 cp azeite de oliva;2 ovos;2 cs açúcar;1 cc sal;1 cp farinha de fubá;3 cp farinha de trigo;1 cs erva-doce;1 cc melhorador para pão;2 ½ cc fb
+Torta Salgada|10|600g:2 cp leite;3/4 cp óleo;3 ovos;3 cs queijo parmesão ralado;1 cc sal;2 cp farinha de trigo;1 cs fermento;recheio à gosto (reservar)
+Pão com Cereais sem Açúcar|10|600g:1 cp leite com 1 ovo (ovo no copo, complete com leite morno);1 cc sal;2 cs óleo vegetal;2 cs adoçante dietético para culinária forno e fogão;3 cp ft;3 cc fb;1 cp cereais integrais sem açúcar (reservar)||Após o bip, espere a massa bater cerca de 5 min, abra a tampa e adicione o cereal.
+Pão com Pó de Casca de Maracujá e Centeio sem Açúcar|1|600g:1 cp água;1 ovo;1 cc sal;2 cs óleo vegetal;2 cs adoçante dietético para culinária forno e fogão;2 cp ft;3 cs pó de casca de maracujá;1 cp farinha de centeio;1/4 cp sementes de linhaça;2 ½ cc fermento biológico seco
+#Pães sem Glúten
+Pão de Queijo sem Glúten|10|600g:1 1/3 cp leite com 2 ovos (ovos no copo, complete com leite);1 ½ cs margarina;1 ½ cc sal;1 cp queijo mussarela em cubos pequenos;½ cp queijo parmesão ralado;3 cp polvilho doce;3 cc fermento químico
+Pão com Linhaça e Liga Neutra sem Glúten|10|600g:1 cp leite ou água morno;1 ovo;2 cs margarina;½ cc sal;2 cs mel;1 cc vinagre;1 1/4 cp creme de arroz;1 cp polvilho doce;½ cp fécula de batata;½ cp farinha de soja;3 cc liga neutra (liga para sorvete);2 cc fb;½ cp semente de linhaça
+Pão com Semente de Girassol e Liga Neutra sem Glúten|10|600g:1 cp leite ou água morno;1 ovo;2 cs óleo ou margarina;½ cc sal;2 cs mel;1 cc vinagre;1 3/4 cp creme de arroz;1 cp polvilho doce;½ cp fécula de batata;½ cp farinha de soja;3 cc liga neutra (liga para sorvete);2 cc fb;½ cp sementes de girassol
+#Pães Integrais / Light
+Pão Light de Aveia e Mel|3|900g:1 1/3 cp água;1 ½ cs margarina;1 ½ cc sal;2 cs mel;2/3 cp aveia;2 ½ cp ft;1 cp farinha de trigo integral;2 ½ cc fb
+Pão de Trigo Integral de Mistura Pronta|3|900g:1 1/3 cp leite com 1 ovo (ovo no copo, complete com leite);1 ½ cs margarina ou manteiga;1 ½ cc sal;2 cs açúcar mascavo;2 cs linhaça ou gergelim;4 cp mistura preparada para pão integral;2 cc fb
+Pão de Trigo Light|3|600g:1 cp água;1 cs margarina;1 ½ cc sal;2 cs açúcar mascavo;2 cp ft;1 cp farinha de trigo integral;2 ½ cc fb
+Pão de Trigo Integral|3|600g:1 cp água;1 cs margarina;1 ½ cc sal;2 cs açúcar mascavo;3 cp farinha de trigo integral;2 cs farinha de glúten;2 ½ cc fb@900g:1 1/3 cp água;1 ½ cs margarina;1 ½ cc sal;2 cs açúcar mascavo;4 cp farinha de trigo integral;3 cs farinha de glúten;2 ½ cc fb
+Pão Integral|3|900g:1 cp leite integral morno;2 ovos em temperatura ambiente;1/4 cp azeite extra virgem;3 cs mel;2 cc sal;2 ½ cp farinha de trigo integral;2 ½ cp ft;2 cc fb
+Pão Integral Perfeito|11|900g:1 1/4 cp água;1/4 cp óleo;1 3/4 cc sal;2 cs açúcar;1 cp farinha de centeio, de milho ou integral;3 cp farinha de trigo;1 cs linhaça;1 cc melhorador para pão;2 ½ cc fb
+Pão Integral Light|3|600g:1 cp leite com 1 ovo (ovo no copo, complete com leite);1 ½ cc sal;1 cs açúcar;1 cs açúcar mascavo;1 ½ cs creme de leite sem soro;2 cp ft;1 cp farinha integral;2 cc fb
+Pão de Centeio|3|600g:1 cp água;1 cs margarina;1 ½ cc sal;2 cs açúcar;1 cs leite em pó;2 cp ft;1 cp farinha de centeio;2 ½ cc fb
+#Pães Doces
+Pão de Páscoa|1|900g:1 1/3 cp água;1 ovo;3 cs manteiga ou margarina;1 ½ cc sal;7 cs açúcar;4 cp farinha de trigo;2 cc fb;1 cp chocolate meio amargo em barra picado e passado em farinha de trigo (reservar)||Após o bip, espere a massa bater cerca de 5 min, abra a tampa e adicione o chocolate picado.¦Feche a tampa; a panificadora continua o preparo.
+Panetone|1|900g:1 cp água;3 gemas;5 cs mistura para panetone;2 cc essência de baunilha;2 cc essência de panetone;1 cc sal;4 cp trigo;2 cc fb;1 cp uvas-passas (reservar);1 cp frutas cristalizadas (reservar)||Após o bip, abra a tampa e adicione as frutas cristalizadas e as uvas-passas.¦Feche a tampa e deixe completar o ciclo.
+Pão Doce|5|450/600g:1 cp água;1 ½ cs margarina;1 ½ cc sal;6 cs açúcar;4 cs leite em pó;3 cp ft;2 cc fb
+Cuca|5|900g:1 1/3 cp água com 2 ovos (ovos primeiro, complete com água);2 cs nata ou margarina;1 ½ cc sal;½ cc noz-moscada;½ cp açúcar;4 cc leite em pó;4 cp ft;2 cc fb;Cobertura: 1 colher (sopa) de margarina (reservar);Cobertura: 1 ½ colher (sopa) de açúcar (reservar);Cobertura: 3 colheres (sopa) de farinha (reservar)||Misture com a mão a margarina, o açúcar e a farinha da cobertura até ter consistência de farofa.¦Quando o display marcar 1:00, pincele ovo sobre a massa crescida e coloque cuidadosamente a farofa. Feche a tampa e deixe completar o ciclo.
+Cuca com Doce de Leite|5|900g:1 1/3 cp água ou leite;2 cs margarina;1 ½ cc sal;½ cp açúcar;2 cc canela em pó;1 cs açúcar baunilha;4 cp farinha de trigo;2 cc fb||Faltando 1h50 para o fim, abra a tampa, faça "furos" na massa com uma colher, coloque doce de leite e ajeite a massa para tampar os buracos.¦Dica: para todo o pão ter gosto de doce de leite, coloque 2 colheres (sopa) no início e confira o ponto da massa.
+Pão de Banana com Chocolate|1|600g:1 banana pequena amassada (coloque no copo e complete com leite);1 ½ cs margarina;1 cc sal;1 cc canela em pó;6 cs açúcar;3 cp ft;2 cc fb;3/4 cp chocolate em pedaços grandes (reservar)||Após o bip, espere a massa bater cerca de 5 min, abra a tampa e adicione o chocolate.
+Pão Doce de Coco|1|600g:½ cp água (complete o copo com leite de coco);2 cs margarina;1 cc sal;4 cs coco ralado;8 cs açúcar;3 cp farinha de trigo;2 cc fb
+Trança Recheada com Cocada|1|900g:1 cp água;1 ovo;3 cs manteiga ou margarina;1 cc sal;6 cs açúcar;1 cc essência de baunilha;2 cs leite em pó;3 cp farinha de trigo;1 ½ cc fb|Recheio: em uma panela, misture 1 pacote (100 g) de coco ralado, 1 copo de água com 3 colheres (sopa) de leite em pó e 6 colheres (sopa) de açúcar. Cozinhe ~15 min, acrescente 1 colher (sopa) de amido de milho dissolvido em 2 colheres de água, cravo a gosto, ferva mais alguns minutos e deixe esfriar.|Após o bip, deixe sovar a massa.¦Terminada a sova, retire a forma e a massa, remova o batedor e divida em 2 porções.¦Em superfície untada ou enfarinhada, abra 2 retângulos, distribua a cocada e enrole como rocambole.¦Enrole os dois rocamboles formando uma trança, coloque na panificadora e deixe completar o ciclo.
+#Bolos
+Bolo Formigueiro|1,10|900g:1 cp água;3 cs leite em pó;3 cs manteiga ou margarina;3 ovos;1 ½ cp açúcar;1 cp amido de milho;3 cp farinha de trigo;2 cs fermento em pó químico (reservar);1/3 cp chocolate granulado (reservar)||Após o bip, abra a tampa e adicione o chocolate e o fermento.¦Feche a tampa e deixe completar o ciclo; aguarde esfriar para desenformar.¦Obs.: no ciclo Rápido, coloque todos os ingredientes no início (não é possível escolher o tamanho).
+Bolo de Coco|10|900g:1 1/3 cp água;3 ovos;3 cs manteiga ou margarina;3 cs açúcar;4 cs leite em pó;1 cp amido de milho;3 cp farinha de trigo;100 g de coco ralado (hidratado);2 cs fermento em pó químico (reservar);Cobertura: leite condensado (reservar)|Hidrate o coco com 1 copo de leite morno. Reserve 4 colheres (sopa) para a cobertura, misturando com ½ lata/caixa de leite condensado.|Após ~12 min a massa bate pela segunda vez: adicione o fermento.¦Feche a tampa e deixe completar o ciclo.¦Distribua a cobertura de leite condensado e coco.
+Bolo Salgado|10|900g:3 ovos;1 cp leite;½ cp óleo;1 cc sal;1 cp amido de milho;2 ½ cp farinha de trigo;1 cs fermento em pó químico (reservar);1 gomo de calabresa em fatias (reservar);1 cs orégano ou 2 colheres (sopa) de queijo ralado (opcional)||Após ~12 min a massa bate pela segunda vez: adicione o fermento.¦Quando o display mostrar 1:00, abra a tampa, coloque suavemente as fatias de calabresa e cubra com orégano ou parmesão ralado.
+Bolo de Chocolate|4|600g:6 cs margarina;2 ovos;1 cp açúcar;3/4 cp leite;2 cp farinha de trigo;2 cc fermento químico;3/4 cp chocolate ou achocolatado;1 pitada de sal
+Bolo de Aipim com Coco|10|900g:1 cp margarina ou manteiga;1 lata de leite condensado (e a mesma medida de leite);3 ovos;100 g de coco ralado desidratado (hidratado);500 g de mandioca crua ralada;2 cp farinha de trigo;1 cc sal;2 cc fermento em pó químico (reservar)|Hidrate o coco com 1 copo de leite ou água morna.|Quando a panificadora bater a massa pela segunda vez, adicione o fermento, feche a tampa e deixe completar o ciclo.
+Bolo de Limão|4|900g:1 cp leite;2 cs suco de limão;1 cs raspas de casca de limão;3 cs manteiga ou margarina;2 ovos;1 cp açúcar;1 cp amido de milho;2 cp farinha de trigo;1 cs fermento em pó químico (reservar);Cobertura: 2 colheres (sopa) de suco de limão, 1 colher (sopa) de raspas e 5 colheres (sopa) de açúcar de confeiteiro (reservar)||Quando a máquina bater a massa pela segunda vez, adicione o fermento, feche a tampa e deixe completar o ciclo.¦Espere esfriar, desenforme e coloque a cobertura.
+Bolo de Refrigerante Cola|10,4|900g:3 ovos inteiros;1 cp refrigerante sabor cola;1 cp açúcar;2 cp ft;1 cs fermento químico em pó;Cobertura (opcional): ½ copo de leite condensado, ½ copo de leite de coco, ½ copo de leite e coco ralado||Cobertura: bata no liquidificador o leite condensado, o leite de coco e o leite; passe sobre o bolo ainda quente e decore com coco ralado.
+Bolo de Laranja|10|900g:1 cp suco de laranja;4 cs manteiga ou margarina;3 ovos;1 ½ cp açúcar;2 cs leite em pó;1 cp amido de milho;3 cp farinha de trigo;2 cs fermento em pó químico (reservar)||Quando a máquina bater a massa pela segunda vez, adicione o fermento, feche a tampa e deixe completar o ciclo.¦Espere esfriar, desenforme e coloque a cobertura.¦Dica: misture 2 colheres (sopa) de suco de laranja com 4 colheres (sopa) de açúcar de confeiteiro e cubra o bolo ainda quente.
+Bolo de Pão de Queijo|10|600g:2 ovos;1 cp leite;½ cp óleo;3 cp polvilho azedo;1 cc sal;2 cc fermento em pó químico;2 cp queijo mussarela picado (reservar);1 cp queijo parmesão ralado (reservar);1 pitada de orégano (reservar)||Após o bip, coloque a mussarela, o parmesão e o orégano e deixe até completar o ciclo.
+Bolo de Fubá|10,4|900g:3 ovos inteiros;2 cp leite;1 ½ cp açúcar;2 cs margarina;1 cp farinha de trigo;2 cp fubá;5 cs coco ralado;1 cs erva-doce;1 cs fermento químico em pó
+Queijadinha|10|900g:3 ovos inteiros;2 cp leite;1 cp açúcar;1 cs margarina;2 cp farinha de trigo;1 cp fubá de milho;1 cs fermento químico em pó;½ cp coco ralado (reservar);½ cp queijo ralado (reservar)||Após o bip, espere a massa bater cerca de 5 min, abra a tampa e adicione o coco e o queijo ralado.
+#Massas
+Massa para Pizza|8|600g:1 cp água;½ cc sal;2 cs azeite de oliva ou óleo vegetal;3 cp ft;1 ½ cc fermento seco@900g:1 1/3 cp água;3/4 cc sal;3 cs azeite de oliva ou óleo vegetal;4 cp ft;2 ½ cc fb||Quando a massa estiver pronta (bip e display 0:00), retire-a, coloque em forma de pizza untada e modele; deixe crescer 10 min.¦Aqueça o forno, coloque o molho e os demais ingredientes; deixe ~20 min ou até dourar.
+Massa Caseira|8|900g:2 cp ft;1 cp farinha de semolina (trigo especial);1 cc sal;1 cs azeite de oliva ou óleo vegetal;1/4 cp água||Retire a massa e coloque em superfície com fina camada de farinha; enrole e corte em tiras finas. Cozinhe em água fervente de 10 a 15 min.
+Massa com Ovos|8|900g:2 cp ft;2 cp farinha de semolina (trigo especial);1 cc sal;1 cs azeite de oliva ou óleo vegetal;4 ovos grandes batidos;1/3 cp água||Retire a massa e coloque em superfície com fina camada de farinha; enrole e corte em tiras finas. Cozinhe em água fervente de 10 a 15 min.
+Massa de Esha|8|900g:½ cp água;½ cp leite;1 cc açúcar;1 ½ cc sal;1 cs manteiga;3 ½ cp farinha de trigo;2 cc fb
+Pãezinhos de Iogurte Natural com Azeite e Linhaça|8|900g:1 cs açúcar refinado;1 cc sal;1 colher (sopa) rasa de fb;1 cp iogurte natural desnatado;4 cs azeite de oliva extra virgem;3 cs semente de linhaça triturada;1/4 cp água;3 cp farinha de trigo;2 colheres (sopa) de linhaça inteira (para polvilhar)||Divida a massa em 12 unidades e modele bolinhas; acomode em forma retangular média, bem próximas.¦Deixe dobrar de volume (~1 h em ambiente a 22 °C).¦Pincele água e polvilhe a linhaça inteira; asse em forno médio (180 °C) por 20 min.
+Massa Básica para Salgados|8|900g:1 cp leite com 1 ovo (ovo no copo, complete com leite);1/3 cp água;1/4 cp óleo;2 cc sal;2 cs açúcar;4 cp farinha de trigo;2 ½ cc fb
+Rolinhos com Mel e Trigo|8|900g:1 cp água;1 cc sal;1/4 cp mel;1 ovo;2 cp ft;1 1/4 cp farinha de trigo integral;2 cc fb||Quando a massa estiver pronta, retire-a da forma e molde como desejar.¦Leve ao forno convencional (180 °C) por 25 a 30 min.
+Focaccia|8|900g:1 cp água;1 cc sal;3 cs azeite de oliva;1 dente de alho amassado;1 ½ cc alecrim;3 cp ft;2 cc fb;Cobertura: 1 ½ colher (sopa) de azeite (reservar);Cobertura: ½ copo de tomates secos (reservar);Cobertura: ½ copo de queijo parmesão ralado (reservar)||Quando a massa estiver pronta, coloque em assadeira untada, cubra com pano e deixe descansar 30 min.¦Com os dedos, faça cavidades a cada 2 cm; pincele o azeite e coloque tomates e parmesão nas cavidades.¦Asse em forno convencional (200 °C) por 15 a 20 min, até dourar a borda. Deixe esfriar e corte.
+Pizza Enrolada|8|600g:1 1/3 cp água;2 cs óleo;2 cc sal;1 ½ cs açúcar;1 cp cenoura ralada crua;4 ½ cp ft;2 cs fb||Retire a massa, divida em 2 partes e abra cada uma em retângulo de ~35x20 cm.¦Passe molho de tomate, coloque queijo, presunto e orégano; enrole como rocambole em assadeira.¦Pincele com ovo, polvilhe queijo ralado, espere 15 min para crescer e leve ao forno médio até dourar.
+Torcidinhos (Orelha de Gato ou Cueca Virada)|8|600g:1 ovo;2 cs açúcar;1 cc óleo vegetal;1/3 cp leite;½ cc sal;3 cp farinha de trigo;1 cc fermento químico||Retire a massa, abra com rolo e corte em retângulos médios; faça um pequeno corte no centro e passe um dos lados pelo buraco.¦Frite em óleo quente.
+Sonho|8|600g:1 ovo;2 cs açúcar;1 cc óleo vegetal;1/3 cp leite;½ cc sal;3 cp farinha de trigo;1 cc fermento químico||Retire a massa e abra com rolo até a espessura desejada.¦Modele e frite em óleo quente.
+Brioches|8|600g:1 cp leite com 1 ovo (ovo no copo, complete com leite);1 cc sal;3 cs açúcar;3 cs margarina;3 cp ft;2 cc fb||Retire a massa, abra com rolo e modele como preferir.¦Leve ao forno convencional (180 °C) por 25 a 30 min.
+Massa de Pizza Integral|8|600g:1 cp água;2 cs azeite de oliva;½ cc sal;3 cp farinha de trigo integral;1 cs germe de trigo (opcional);1 ½ cc fb@900g:1 1/3 cp água;3 cs azeite de oliva;3/4 cc sal;4 cp farinha de trigo integral;1 ½ cs germe de trigo (opcional);2 cc fb||Retire a massa, coloque sobre superfície com farinha de trigo e abra com rolo.¦Leve ao forno convencional (180 °C) por 15 min ou até dourar.
+Croissant Doce|8|600g:1 cp leite com 1 ovo (ovo no copo, complete com leite);2 cc sal;3 ½ cs açúcar;3 cp ft;2 cc fb||Retire a massa, abra com rolo e modele; pincele com gema de ovo.¦Leve ao forno convencional (180 °C) por 25 a 30 min. Dica: recheie a gosto (doce de leite, brigadeiro, geléias...).
+Croissant de Queijo|8|600g:1 cp leite com 1 ovo (ovo no copo, complete com leite);2 cc sal;1 cc açúcar;3 cs queijo picado em pequenas tiras;1 cc orégano;3 cp ft;2 cc fermento seco||Retire a massa, abra com rolo e modele; pincele com gema de ovo.¦Leve ao forno convencional (180 °C) por 25 a 30 min. Dica: troque o queijo por calabresa, presunto ou temperos.
+#Pudins e Geléias
+Pudim de Leite|12|Único:3 ovos;1 cp leite condensado;2 cp leite|Bata no liquidificador os ingredientes. Em panela separada, derreta açúcar até virar caramelo, caramelize a forma e adicione a mistura.
+Pudim de Pão|12|Único:3 ovos;2 pães amanhecidos;1 cp açúcar;2 cp leite;5 cs farinha de trigo;1 cc canela em pó|Bata os ingredientes no liquidificador. Em panela separada, derreta açúcar até virar caramelo, caramelize a forma e adicione a mistura.
+Geléia de Morango|9|750g:1 ½ cp morangos frescos cortados;1 cp açúcar;2 cc suco de limão
+Geléia de Abacaxi|9|750g:5 cp abacaxi triturado no liquidificador;2 cp açúcar;2 cc suco de limão
+`;
+const R=[];let G='';
+RAW.trim().split('\n').forEach(l=>{if(l[0]=='#'){G=l.slice(1);return}const[n,cy,ws,pre,ex]=l.split('|');
+R.push({id:'b'+R.length,g:G,n,c:cy.split(',').map(x=>parseInt(x)),q:/q/.test(cy),w:ws.split('@').map(w=>{const k=w.indexOf(':');return[w.slice(0,k),w.slice(k+1).split(';').map(X)]}),pre:pre||'',ex:ex?ex.split('¦'):[]})});
+const all=()=>R.concat(LS.get('mp_custom',[]));
+const find=id=>all().find(r=>r.id==id);
+const pad=n=>String(n).padStart(2,'0');
+const hm=m=>Math.floor(m/60)+':'+pad(Math.round(m%60));
+const cd=s=>{s=Math.max(0,Math.ceil(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return(h?h+':'+pad(m):pad(m))+':'+pad(s%60)};
+const hhmm=d=>pad(d.getHours())+':'+pad(d.getMinutes());
+let A,iv,tk,run=LS.get('mp_run',null),WS={},CS={},DR={},ed=null,ac=null,HQ='',cf=null,curK='';
+const CAP=window.Capacitor,LN=CAP&&CAP.Plugins&&CAP.Plugins.LocalNotifications,CAM=CAP&&CAP.Plugins&&CAP.Plugins.Camera,native=!!(CAP&&CAP.isNativePlatform&&CAP.isNativePlatform()&&LN);
+function toast(t){const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),1800)}
+const LOGO='<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7bf63"/><stop offset="1" stop-color="#d67824"/></linearGradient><linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e09646"/><stop offset="1" stop-color="#96501a"/></linearGradient></defs><rect width="100" height="100" rx="22" fill="url(#g)"/><path d="M18 62C14 42 28 28 50 28S86 42 82 62c0 7-4 10-8 10H26c-4 0-8-3-8-10z" fill="url(#b)" stroke="#6b3510" stroke-width="2.6" stroke-linejoin="round"/><path d="M34 41l7 15M49 37l8 17M65 41l7 14" stroke="#f7deac" stroke-width="4.6" stroke-linecap="round"/></svg>';
+function bell(){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume&&ac.resume();[0,.55].forEach(t0=>{[[1,.5,2.2],[2.76,.28,1.0],[5.4,.12,.6],[8.93,.06,.4]].forEach(([m,a,dc])=>{const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+t0;o.type='sine';o.frequency.value=880*m;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(a,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+1.8*dc/2.2+.2);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+2)})})}catch(e){}try{navigator.vibrate&&navigator.vibrate([250,120,250])}catch(e){}}
+const fmtD=s=>{s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return h?h+' h '+pad(m)+' min':m?m+' min'+(x?' '+x+' s':''):x+' s'};
+function webN(t,b){try{if('Notification'in window&&Notification.permission==='granted')new Notification(t,{body:b,icon:'data:image/svg+xml,'+encodeURIComponent(LOGO)})}catch(e){}}
+async function ensurePerm(){try{if(native){let p=await LN.checkPermissions();if(p.display!=='granted')p=await LN.requestPermissions();try{await LN.createChannel({id:'multipane',name:'Etapas da panificadora',description:'Aviso de cada etapa do ciclo',importance:5,sound:'sineta.wav',vibration:true,visibility:1})}catch(e){}try{const x=await LN.checkExactNotificationSetting();if(x.exact_alarm!=='granted'&&!LS.get('mp_exact',0)){LS.set('mp_exact',1);await LN.changeExactNotificationSetting()}}catch(e){}return p.display==='granted'}if('Notification'in window&&Notification.permission==='default')return(await Notification.requestPermission())==='granted'}catch(e){}return false}
+const NID=1000;
+async function cancelN(){if(!native)return;try{await LN.cancel({notifications:Array.from({length:30},(_,i)=>({id:NID+i}))})}catch(e){}}
+function sched(){const o=[];let t=run.ps;for(let k=run.idx;k<run.ph.length;k++){const p=run.ph[k],e=t+p.d*1000;o.push({k,s:t,e,p});t=e}return o}
+const nTitle=x=>`Etapa ${x.k+1}/${run.ph.length}: ${x.p.n}`,nBody=x=>`Duração: ${fmtD(x.p.d)} · termina às ${hhmm(new Date(x.e))} · ${run.name}`;
+async function plan(now){const L=sched();if(!L.length)return;
+if(native){await cancelN();const ns=[];L.forEach((x,i)=>{const o={id:NID+x.k,title:nTitle(x),body:nBody(x),channelId:'multipane',sound:'sineta.wav'};if(i==0){if(now)ns.push(o)}else{o.schedule={at:new Date(x.s),allowWhileIdle:true};ns.push(o)}});
+ns.push({id:NID+25,title:'Pão pronto! 🍞',body:run.name+' — retire a forma com luvas térmicas.',channelId:'multipane',sound:'sineta.wav',schedule:{at:new Date(L[L.length-1].e),allowWhileIdle:true}});
+try{await LN.schedule({notifications:ns})}catch(e){}}else if(now)webN(nTitle(L[0]),nBody(L[0]))}
+function shrink(u,mx=900,q=.65){return new Promise(r=>{const i=new Image();i.onload=()=>{const k=Math.min(1,mx/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext('2d').drawImage(i,0,0,c.width,c.height);r(c.toDataURL('image/jpeg',q))};i.onerror=()=>r(null);i.src=u})}
+function pick(cb){if(CAM){CAM.getPhoto({quality:70,width:1200,resultType:'dataUrl',source:'PROMPT',promptLabelHeader:'Foto',promptLabelPhoto:'Galeria',promptLabelPicture:'Tirar foto'}).then(async p=>cb(await shrink(p.dataUrl))).catch(()=>{});return}
+const f=document.createElement('input');f.type='file';f.accept='image/*';f.onchange=()=>{if(!f.files[0])return;const fr=new FileReader();fr.onload=async()=>cb(await shrink(fr.result));fr.readAsDataURL(f.files[0])};f.click()}
+function zoom(s){const o=document.createElement('div');o.className='ov';o.innerHTML=`<img src="${s}">`;o.onclick=()=>o.remove();document.body.appendChild(o)}
+const phs=(p,del)=>(p||[]).map((u,i)=>`<div class="th"><img src="${u}" onclick="zoom(this.src)"><button onclick="${del}${i})">×</button></div>`).join('');
+const back='<a class="back" href="#/home">← Início</a>';
+function route(){clearInterval(iv);clearInterval(tk);A=$('#app');const h=location.hash.slice(2).split('/');window.scrollTo(0,0);({'':vHome,home:vHome,r:vRec,run:vRun,how:vHow,conv:vConv,timer:vTimer,hist:vHist,edit:vEdit,he:vHE}[h[0]]||vHome)(h[1])}
+addEventListener('hashchange',route);
+
+const GI={'Pães Tr':'🍞','Pães Es':'🥖','Pães se':'🌾','Pães In':'🌻','Pães Do':'🥐','Bolos':'🍰','Massas':'🍕','Pudins':'🍮','Minhas':'⭐'};
+const gi=g=>GI[Object.keys(GI).find(k=>g.startsWith(k))]||'🍞';
+function vHome(){A.innerHTML=`<div class="hero"><div class="logo">${LOGO}</div><div><h1>MULTIPANE</h1><p>Panificadora Britânia Multipane</p></div></div>
+${run?`<a class="card hl" href="#/run">⏱ ${run.done?'Ciclo concluído':run.paused?'Ciclo pausado':'Ciclo em andamento'}: ${esc(run.name)} — ver</a>`:''}
+<div class="grid"><a class="gb" href="#/how"><i>📖</i>COMO UTILIZAR A PANIFICADORA</a><a class="gb" href="#/conv"><i>📏</i>TABELA DE CONVERSÃO DE MEDIDAS</a><a class="gb" href="#/timer"><i>⏰</i>TIMER</a><a class="gb" href="#/hist"><i>🕘</i>HISTÓRICO</a></div>
+<h2 class="sec">Receitas</h2><input type="search" id="sq" placeholder="🔍 Buscar receita…" value="${esc(HQ)}" oninput="HQ=this.value;lst()"><div id="lst" style="margin-top:6px"></div>`;lst()}
+function lst(){const q=HQ.trim().toLowerCase(),rs=all().filter(r=>!q||r.n.toLowerCase().includes(q));let g='',h='';
+rs.forEach(r=>{const gg=r.u?'Minhas receitas':r.g;if(gg!=g){g=gg;h+=`<h2>${gi(g)} ${esc(g)}</h2>`}h+=`<a class="card" href="#/r/${r.id}"><b>${esc(r.n)}</b><small>Ciclo ${r.c.map(c=>c+' – '+CY[c]).join(' ou ')} · ${r.w.map(w=>w[0]).join(' · ')}</small></a>`});
+$('#lst').innerHTML=h+(rs.length?'':'<p class="mut">Nenhuma receita encontrada.</p>')+'<a class="card add" href="#/edit/new">＋ Nova receita</a>'}
+
+function steps(r,ci,wi){const c=r.c[ci],o=opt(r.w[wi][0]),res=r.w[wi][1].some(x=>/reservar/.test(x)),s=[];if(r.pre)s.push(r.pre);
+s.push('Retire a forma de assar de dentro da panificadora.','Adicione os ingredientes na ordem indicada'+(res?', exceto os marcados com (reservar)':'')+'.','Recoloque a forma de assar na panificadora.',`Pressione OPÇÕES até aparecer ${c} (${CY[c]}).`);
+if(r.q||[1,2,3,5,6,7,11].includes(c))s.push(`Pressione QUANTIDADE DE MASSA e escolha a opção ${o} (${o=='I'?'450 g ou 600 g':'900 g ou 1200 g'}).`);
+if(![8,9,11,12].includes(c))s.push('Pressione COR e escolha: Clara, Média ou Escura.');
+s.push('Feche a tampa.','Pressione INICIAR/PARAR.');return s.concat(r.ex||[])}
+
+function vRec(id){const r=find(id);if(!r)return vHome();const wi=Math.min(WS[id]||0,r.w.length-1),ci=Math.min(CS[id]||0,r.c.length-1),w=r.w[wi],c=r.c[ci],o=opt(w[0]),k=id+'|'+wi,d=DR[k]=DR[k]||{c:[],n:'',p:[]};d.p=d.p||[];curK=k;
+A.innerHTML=`${back}<h1>${esc(r.n)}</h1><p class="mut" style="margin:0">Ciclo ${c} – ${CY[c]} · opção ${o} · tempo do ciclo ${hm(tot(c,o))}h</p>
+${r.c.length>1?`<label class="l">Ciclo</label><div class="chips">${r.c.map((x,i)=>`<button class="chip ${i==ci?'on':''}" onclick="CS['${id}']=${i};vRec('${id}')">${x} – ${CY[x]}</button>`).join('')}</div>`:''}
+${r.w.length>1?`<label class="l">Peso</label><div class="chips">${r.w.map((x,i)=>`<button class="chip ${i==wi?'on':''}" onclick="WS['${id}']=${i};vRec('${id}')">${esc(x[0])}</button>`).join('')}</div>`:(w[0]!='Único'?`<p><b>Peso: ${esc(w[0])}</b></p>`:'')}
+<h2>Ingredientes</h2>${w[1].map((t,j)=>`<label class="ing"><input type="checkbox" ${d.c[j]?'checked':''} onchange="DR['${k}'].c[${j}]=this.checked"><span>${esc(t)}</span></label>`).join('')}
+<label class="l">OBSERVAÇÕES</label><textarea placeholder="Anote algo relevante deste preparo…" oninput="DR['${k}'].n=this.value">${esc(d.n)}</textarea>
+<div class="ph" id="pl">${phs(d.p,'delDP(')}</div><button class="btn sec" onclick="addDP()">📷 Adicionar foto</button>
+<details><summary>Modo de preparo</summary><ol>${steps(r,ci,wi).map(x=>`<li>${esc(x)}</li>`).join('')}</ol></details>
+${r.u?`<div class="row"><button class="btn sec" style="margin:0" onclick="location.hash='#/edit/${id}'">✏️ Editar</button><button class="btn sec" style="margin:0" onclick="delRec('${id}')">🗑 Excluir</button></div>`:''}
+<div class="bar"><button class="btn sec" onclick="saveRec('${id}')">💾 SALVAR</button><button class="btn" onclick="startRun('${id}')">▶ INICIAR</button></div>`}
+function addDP(){pick(u=>{if(!u)return toast('Não foi possível ler a foto');const d=DR[curK];d.p.push(u);$('#pl').innerHTML=phs(d.p,'delDP(')})}
+function delDP(i){const d=DR[curK];d.p.splice(i,1);$('#pl').innerHTML=phs(d.p,'delDP(')}
+function saveRec(id){const r=find(id),wi=WS[id]||0,ci=CS[id]||0,w=r.w[wi],d=DR[id+'|'+wi]||{c:[],n:'',p:[]},h=LS.get('mp_hist',[]);
+h.push({ts:Date.now(),n:r.n,w:w[0],c:r.c[ci],i:w[1].map((t,j)=>[t,!!d.c[j]]),o:d.n,p:d.p||[]});
+if(!LS.set('mp_hist',h)){h.pop();return toast('Sem espaço: remova algumas fotos')}d.p=[];toast('Salvo no histórico ✔');vRec(id)}
+function delRec(id){LS.set('mp_custom',LS.get('mp_custom',[]).filter(r=>r.id!=id));location.hash='#/home'}
+
+function phases(c,o){return row(c,o).map((m,i)=>({n:PL[i],d:m})).filter(p=>p.d>0)}
+async function startRun(id){const r=find(id),wi=WS[id]||0,ci=CS[id]||0,w=r.w[wi],c=r.c[ci],o=opt(w[0]);
+run={name:r.n,w:w[0],c,ph:phases(c,o),idx:0,ps:Date.now(),st:Date.now(),done:false,paused:false};
+try{navigator.wakeLock&&navigator.wakeLock.request('screen').catch(()=>{})}catch(e){}
+if(!native)bell();await ensurePerm();run.ps=run.st=Date.now();LS.set('mp_run',run);await plan(true);location.hash='#/run'}
+async function endRun(){await cancelN();run=null;LS.set('mp_run',null);location.hash='#/home'}
+function norm(){if(run.paused)return false;let ch=false;while(!run.done&&Date.now()>=run.ps+run.ph[run.idx].d*1000){if(run.idx<run.ph.length-1){run.ps+=run.ph[run.idx].d*1000;run.idx++}else{run.done=true;run.end=run.ps+run.ph[run.idx].d*1000}ch=true}return ch}
+const advLbl=()=>run.idx>=run.ph.length-1?'🏁 FINALIZAR CICLO':'⏭ AVANÇAR ETAPA';
+function ctl(){$('#ctl').innerHTML=run.done?`<button class="btn" onclick="endRun()">CONCLUIR E VOLTAR</button>`:`<button class="btn" id="bp" onclick="togglePause()">${run.paused?'▶ RETOMAR':'⏸ PAUSAR'}</button><button class="btn sec" id="ba" onclick="advance()">${advLbl()}</button><p class="small" style="margin:0 0 8px">Use AVANÇAR quando a panificadora terminar a etapa antes do previsto.</p><div class="row2"><button class="btn sec" onclick="doAdv(-1)" ${run.idx?'':'disabled'}>⏮ Voltar etapa</button><button class="btn sec" onclick="endRun()">Encerrar ciclo</button></div>`}
+function advance(){const b=$('#ba');if(!cf){b.textContent='Toque de novo para confirmar';cf=setTimeout(()=>{cf=null;const x=$('#ba');x&&(x.textContent=advLbl())},3500);return}clearTimeout(cf);cf=null;doAdv(1)}
+async function togglePause(){if(!run||run.done)return;norm();if(run.done)return vRun();
+if(run.paused){run.ps+=Date.now()-run.pat;run.paused=false;LS.set('mp_run',run);await plan(false)}
+else{run.paused=true;run.pat=Date.now();LS.set('mp_run',run);await cancelN()}vRun()}
+async function doAdv(d){if(!run||run.done)return;norm();if(run.done)return vRun();
+if(d>0){if(run.idx<run.ph.length-1){run.idx++;run.ps=Date.now()}else{run.done=true;run.paused=false;run.end=Date.now()}}else if(run.idx>0){run.idx--;run.ps=Date.now()}else return;
+if(run.paused)run.pat=Date.now();LS.set('mp_run',run);if(!native)bell();if(run.done||run.paused)await cancelN();else await plan(true);vRun()}
+function vRun(){clearInterval(tk);if(!run){location.hash='#/home';return}
+A.innerHTML=`${back}<div class="runbox"><p class="mut" style="margin:0 0 4px">${esc(run.name)} · ${esc(run.w)} · Ciclo ${run.c} – ${CY[run.c]}</p>
+<div class="ringw"><svg viewBox="0 0 200 200"><circle class="rb" cx="100" cy="100" r="88"/><circle id="rg" class="rf" cx="100" cy="100" r="88" transform="rotate(-90 100 100)"/></svg><div class="rin"><div class="lbl" id="lb">FASE ATUAL</div><div class="phase" id="ph"></div><div class="cd" id="cd"></div><div class="small" id="sb"></div></div></div>
+<p class="small" id="en" style="margin:4px 0"></p><div class="bar0"><i id="pg"></i></div><p class="small" id="rm" style="margin:6px 0"></p><p class="small" id="nx" style="margin:0"></p></div>
+<div id="ctl"></div><p class="small">Pressione INICIAR/PARAR na panificadora ao mesmo tempo. A duração de cada etapa segue a tabela de ciclos do app (a sua planilha) para o ciclo e a opção de massa escolhidos. Se pausar a panificadora, pause aqui também. Você é avisado com sineta no início de cada etapa. Ao final, retire o pão logo após o bip (a máquina mantém aquecido por 1 hora) e deixe descansar 15 min antes de cortar.</p>`;
+let key='';
+const up=()=>{if(norm()){LS.set('mp_run',run);if(!native){bell();if(run.done)webN('Pão pronto! 🍞',run.name);else{const x=sched()[0];webN(nTitle(x),nBody(x))}}}
+const k=run.idx+':'+run.done+':'+run.paused;if(k!=key){key=k;ctl()}
+const now=Date.now(),all2=run.ph.reduce((a,q)=>a+q.d,0);
+if(run.done){$('#lb').textContent='FASE ATUAL';$('#ph').textContent='Pronto! 🍞';$('#cd').textContent='00:00';$('#sb').textContent='retire a forma com luvas';$('#rg').style.strokeDashoffset=0;$('#pg').style.width='100%';$('#en').textContent='';$('#rm').textContent='Ciclo concluído às '+hhmm(new Date(run.end||now));$('#nx').textContent='';return}
+const p=run.ph[run.idx],nf=run.paused?run.pat:now,rem=Math.max(0,(run.ps+p.d*1000-nf)/1000),later=run.ph.slice(run.idx+1).reduce((a,q)=>a+q.d,0),end=now+rem*1000;
+$('#lb').textContent=run.paused?'⏸ PAUSADO':'FASE ATUAL';$('#ph').textContent=p.n;$('#cd').textContent=cd(rem);$('#sb').textContent=`etapa ${run.idx+1} de ${run.ph.length}`;$('#rg').style.strokeDashoffset=553*(1-rem/p.d);
+$('#en').textContent=`Esta etapa termina às ${hhmm(new Date(end))}${run.paused?' (se retomar agora)':''} · duração ${fmtD(p.d)}`;$('#pg').style.width=Math.min(100,(all2-rem-later)/all2*100)+'%';
+$('#rm').textContent='Tempo restante total: '+cd(rem+later)+' · fim às '+hhmm(new Date(end+later*1000));$('#nx').textContent=run.ph[run.idx+1]?'Próxima: '+run.ph[run.idx+1].n+' ('+fmtD(run.ph[run.idx+1].d)+')':'Última etapa'};
+up();tk=setInterval(up,500)}
+
+function vHist(){const h=LS.get('mp_hist',[]).map((e,i)=>[e,i]).sort((a,b)=>b[0].ts-a[0].ts);
+A.innerHTML=`${back}<h1>Histórico</h1>`+(h.length?h.map(([e,i])=>`<div class="card"><b>${esc(e.n)} · ${esc(e.w)}</b><small>📅 ${new Date(e.ts).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})} · Ciclo ${e.c} – ${CY[e.c]}</small><p class="hi" style="margin:8px 0 4px">${e.i.map(x=>(x[1]?'✅ ':'⬜ ')+esc(x[0])).join('<br>')}</p>${e.o?`<p class="hi" style="margin:6px 0"><b>Obs.:</b> ${esc(e.o).replace(/\n/g,'<br>')}</p>`:''}<div class="ph" id="hp${i}">${phs(e.p,'delHP('+i+',')}</div><button class="x" onclick="location.hash='#/he/${i}'">✏️ Editar</button><button class="x" onclick="addHP(${i})">📷 Foto</button><button class="x" onclick="delH(${i})">🗑 Excluir</button></div>`).join(''):'<p class="mut">Nenhuma receita salva ainda. Use o botão SALVAR dentro de uma receita.</p>')}
+function addHP(i){pick(u=>{if(!u)return toast('Não foi possível ler a foto');const h=LS.get('mp_hist',[]);(h[i].p=h[i].p||[]).push(u);if(!LS.set('mp_hist',h)){h[i].p.pop();return toast('Sem espaço para a foto')}vHist()})}
+function delHP(i,j){const h=LS.get('mp_hist',[]);h[i].p.splice(j,1);LS.set('mp_hist',h);vHist()}
+function delH(i){const h=LS.get('mp_hist',[]);h.splice(i,1);LS.set('mp_hist',h);vHist()}
+let he=null,hi=-1;
+const dtl=t=>{const d=new Date(t);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes())};
+function vHE(i){hi=+i;const e=LS.get('mp_hist',[])[hi];if(!e){location.hash='#/hist';return}he=JSON.parse(JSON.stringify(e));rHE()}
+function rHE(){A.innerHTML=`<a class="back" href="#/hist">← Cancelar</a><h1>Editar registro</h1>
+<label class="l">Receita</label><input type="text" value="${esc(he.n)}" oninput="he.n=this.value">
+<label class="l">Peso</label><input type="text" value="${esc(he.w)}" oninput="he.w=this.value">
+<label class="l">Data e hora</label><input type="datetime-local" value="${dtl(he.ts)}" oninput="if(this.value)he.ts=new Date(this.value).getTime()">
+<label class="l">Ingredientes (marcados = usados)</label>${he.i.map((x,j)=>`<div class="ing"><input type="checkbox" ${x[1]?'checked':''} onchange="he.i[${j}][1]=this.checked"><input type="text" value="${esc(x[0])}" oninput="he.i[${j}][0]=this.value"><button class="x" onclick="he.i.splice(${j},1);rHE()">×</button></div>`).join('')}
+<div class="row" style="margin-top:8px"><input type="text" id="hn" placeholder="Novo ingrediente" onkeydown="if(event.key=='Enter')addHEI()"><button class="btn" onclick="addHEI()">＋</button></div>
+<label class="l">OBSERVAÇÕES</label><textarea oninput="he.o=this.value">${esc(he.o||'')}</textarea>
+<div class="bar"><button class="btn" onclick="saveHE()">SALVAR ALTERAÇÕES</button></div>`}
+function addHEI(){const v=$('#hn').value.trim();if(!v)return;he.i.push([v,false]);rHE();$('#hn').focus()}
+function saveHE(){if(!he.n.trim())return toast('A receita precisa de um nome');const h=LS.get('mp_hist',[]),old=h[hi];h[hi]=he;if(!LS.set('mp_hist',h)){h[hi]=old;return toast('Não foi possível salvar')}toast('Registro atualizado ✔');location.hash='#/hist'}
+
+function vConv(){const T2=[[240,"1",16,48],[210,"7/8",14,42],[180,"3/4",12,36],[150,"5/8",10,30],[120,"1/2",8,24],[90,"3/8",6,18],[60,"1/4",4,12],[30,"1/8",2,6],[15,"",1,3]];
+A.innerHTML=`${back}<h1>Tabela de conversão de medidas</h1><div class="card"><b>Medida do manual (pág. 17)</b>Para farinha de trigo, utilize o copo Britânia cheio (<b>240 ml</b>) e a colher medidora Britânia.</div>
+<p class="small">O arquivo do manual enviado não traz o quadro de conversão (a página "Instrumentos medidores" não veio no texto). Abaixo, uma <b>referência padrão</b> baseada no copo de 240 ml — não é do manual:</p>
+<table><tr><th>ml</th><th>Copo(s)</th><th>Colher(es) de Sopa</th><th>Colher(es) de Chá</th></tr>${T2.map(r=>'<tr>'+r.map(c=>`<td>${c}</td>`).join('')+'</tr>').join('')}</table>`}
+
+function vHow(){A.innerHTML=`${back}<h1>Como utilizar a Panificadora Multi Pane</h1><div class="how">
+<h2>Teclas e display</h2><ul><li><b>COR:</b> escolhe a cor do pão (claro, médio ou escuro).</li><li><b>OPÇÕES:</b> seleciona o ciclo indicado na receita (1 = Normal, 2 = Francês, 3 = Integral…). Use sempre o ciclo indicado.</li><li><b>QUANTIDADE DE MASSA:</b> Opção I (450 g e 600 g) ou Opção II (900 g e 1200 g).</li><li><b>Setas de tempo / TIMER:</b> programam a hora em que o pão ficará pronto (retarda o preparo em até 13 horas).</li><li><b>INICIAR/PARAR:</b> toque breve para ligar (luz vermelha acende); para desligar, pressione até a luz apagar e soar o bip.</li></ul>
+<h2>Utilização</h2><ol>
+<li><b>As peças:</b> reúna panificadora, forma, batedor e instrumentos de medida.</li>
+<li><b>A forma:</b> remova-a girando levemente em sentido anti-horário até desencaixar. Lave com esponja macia e detergente neutro, enxágue e seque.</li>
+<li><b>O batedor:</b> encaixe-o na forma. Os ingredientes devem ser colocados na forma ainda fora do aparelho, para não caírem no forno e na resistência.</li>
+<li><b>As medidas:</b> use sempre medidas exatas. Ao medir secos, não pegue a farinha diretamente com o copo: encha o copo com uma colher, ultrapassando a borda, bata a colher ao lado do copo para tirar bolhas de ar e remova o excesso com uma espátula.</li>
+<li><b>Os ingredientes:</b> use sempre ingredientes frescos e de boa qualidade, seguindo a ordem da receita: primeiro os líquidos, em seguida os sólidos e, por último, o fermento.</li>
+<li><b>Preparando uma receita:</b> meça os ingredientes com atenção.</li>
+<li><b>Colocando a forma:</b> ajuste a forma no aparelho, fixando-a e girando em sentido horário até encaixar. Feche a tampa.</li>
+<li><b>Programando:</b> ao ligar na tomada, o display acende e emite um sinal sonoro. Escolha o ciclo em OPÇÕES, o tamanho em QUANTIDADE DE MASSA e a cor em COR; pressione INICIAR/PARAR.</li>
+<li><b>Início do preparo:</b> o display mostra a contagem regressiva até o pão ficar pronto.</li>
+<li><b>Término do preparo:</b> soa um bip e o display mostra 0:00. Retire o pão logo após o bip final para ficar mais saboroso e crocante; se não, a panificadora mantém o pão quente por uma hora. Com pano ou luvas térmicas, segure a forma virada para baixo e balance até o pão soltar. Se o batedor ficar no pão, retire-o com o gancho.</li>
+<li><b>Após o preparo:</b> deixe o pão descansar 15 minutos antes de cortar. Para outra fornada, deixe a tampa aberta e aguarde 20 minutos até esfriar. Depois de usar, retire da tomada.</li></ol>
+<h2>Dicas importantes</h2><ul><li>Ingredientes muito quentes ou muito gelados alteram o crescimento da massa.</li><li>Para melhores resultados, os ingredientes devem estar a cerca de 23 °C.</li><li>O fermento não deve ter contato com a água nem com o sal: coloque-o no meio da farinha, num "buraco".</li><li>Observe a validade dos ingredientes, especialmente fermento e farinha.</li><li>Use o aparelho em ambientes entre 20 °C e 27 °C.</li></ul>
+<h2>Como acertar o ponto da massa</h2><p>Após 5 ou 6 minutos do início, abra a tampa: a massa deve ser uma bola homogênea. Se estiver mole (gruda na forma), acrescente 1 colher (sopa) de farinha ou mais. Se estiver disforme (dura), acrescente 1 colher (chá) de água ou mais.</p></div>`}
+
+function vTimer(){const o=all().flatMap(r=>r.w.flatMap((w,i)=>r.c.map((c,ci)=>`<option value="${r.id}|${i}|${ci}">${esc(r.n)} – ${esc(w[0])}${r.c.length>1?' – ciclo '+c:''}</option>`))).join('');
+A.innerHTML=`${back}<h1>Timer</h1><p class="mut" style="margin:0">Hora atual do celular</p><div class="clock" id="ck"></div>
+<label class="l">Hora em que o ciclo deve terminar</label><input type="time" id="te" oninput="calc()">
+<label class="l">Receita (opcional, confere o tempo mínimo e perecíveis)</label><select id="tr" onchange="calc()"><option value="">— nenhuma —</option>${o}</select>
+<div id="rs"></div><p class="small" style="margin-top:16px">O TIMER adia o preparo em até 13 horas. O tempo programado no visor é o tempo até o pão ficar pronto (inclui o preparo). Em dias muito quentes, reduza a água em 1 ou 2 colheres (sopa). O fermento não pode tocar a água nem o sal até a mistura começar. Não use o Timer com leite, ovos ou outros perecíveis.</p>`;
+const t=()=>{$('#ck').textContent=new Date().toLocaleTimeString('pt-BR');calc()};t();iv=setInterval(t,1000)}
+function calc(){const v=$('#te')&&$('#te').value,R2=$('#rs');if(!v){R2.innerHTML='';return}
+const[h,m]=v.split(':').map(Number),n=new Date(),e=new Date(n);e.setHours(h,m,0,0);if(e<=n)e.setDate(e.getDate()+1);
+const d=(e-n)/60000,day=x=>x.toDateString()==n.toDateString()?'hoje':'amanhã';let out='',sel=$('#tr').value,rc=null;
+if(sel){const[id,i,ci]=sel.split('|'),r=find(id);rc={r,w:r.w[i],c:r.c[+ci||0]}}
+if(rc){const mn=tot(rc.c,opt(rc.w[0]));if(d<mn){R2.className='res err';R2.innerHTML=`<b>Tempo insuficiente.</b> ${esc(rc.r.n)} leva ${hm(mn)}h; faltam só ${hm(d)}h até ${v}. Escolha um horário final mais tarde.`;return}}
+const disp=d>780?780:Math.max(10,Math.round(d/10)*10);
+if(d>780){const s=new Date(e-780*60000);out=`⏳ O TIMER aceita no máximo 13h. <b>Inicie a programação às ${hhmm(s)} (${day(s)})</b> e programe <b>13:00</b> no visor. O pão ficará pronto às ${v} (${day(e)}).`}
+else{const f=new Date(n.getTime()+disp*60000);out=`▶ <b>Programe agora</b> o visor para <b>${hm(disp)}</b> (faltam ${hm(d)}h até ${v}; ajuste com as setas até o valor mais próximo) e pressione INICIAR/PARAR. Pronto às ~${hhmm(f)} (${day(f)}).`}
+if(rc){const t=rc.w[1].join(' ').toLowerCase().replace(/leite em pó|leite de coco|leite condensado/g,'');if(/ovo|leite|queijo|creme|iogurte|requeijão|calabresa|peru|nata|gema/.test(t))out+=`<br><br>⚠️ Esta receita tem ingredientes perecíveis (ovos/leite etc.): o manual diz para <b>não usar o TIMER</b>.`}
+R2.className='res';R2.innerHTML=out}
+
+const WL=['450g','600g','900g','1200g','Único'];
+function vEdit(id){if(id!==undefined){const r=id=='new'?null:LS.get('mp_custom',[]).find(x=>x.id==id);ed=r?{id:r.id,n:r.n,c:r.c[0],ws:r.w.map(w=>({l:w[0],i:w[1].slice()})),cur:0}:{id:null,n:'',c:1,ws:[{l:'900g',i:[]}],cur:0}}rEd()}
+function rEd(){const w=ed.ws[ed.cur];A.innerHTML=`<a class="back" href="#/home">← Cancelar</a><h1>${ed.id?'Editar':'Nova'} receita</h1>
+<label class="l">Nome</label><input type="text" value="${esc(ed.n)}" oninput="ed.n=this.value">
+<label class="l">Ciclo de programação</label><select onchange="ed.c=+this.value">${CY.slice(1).map((n,i)=>`<option value="${i+1}" ${ed.c==i+1?'selected':''}>${i+1} – ${n}</option>`).join('')}</select>
+<label class="l">Pesos disponíveis</label><div class="chips">${WL.map(l=>`<button class="chip ${ed.ws.some(x=>x.l==l)?'on':''}" onclick="togW('${l}')">${l}</button>`).join('')}</div>
+<label class="l">Editando o peso:</label><div class="chips">${ed.ws.map((x,i)=>`<button class="chip ${i==ed.cur?'on':''}" onclick="ed.cur=${i};rEd()">${x.l}</button>`).join('')}</div>
+<label class="l">Ingredientes – ${w.l}</label>${w.i.map((t,j)=>`<div class="ing"><span style="flex:1">${esc(t)}</span><button class="x" onclick="ed.ws[ed.cur].i.splice(${j},1);rEd()">×</button></div>`).join('')}
+<div class="row" style="margin-top:8px"><input type="text" id="ni" placeholder="Ex.: 2 copos de farinha" onkeydown="if(event.key=='Enter')addI()"><button class="btn" onclick="addI()">＋</button></div>
+<p class="small">O tempo total é definido pelo ciclo escolhido (manual, pág. 6–7).</p>
+<div class="bar"><button class="btn" onclick="saveEd()">SALVAR RECEITA</button></div>`}
+function togW(l){const i=ed.ws.findIndex(x=>x.l==l);if(i>=0){if(ed.ws.length>1){ed.ws.splice(i,1);ed.cur=0}}else{ed.ws.push({l,i:[]});ed.ws.sort((a,b)=>WL.indexOf(a.l)-WL.indexOf(b.l));ed.cur=ed.ws.findIndex(x=>x.l==l)}rEd()}
+function addI(){const v=$('#ni').value.trim();if(!v)return;ed.ws[ed.cur].i.push(v);rEd();$('#ni').focus()}
+function saveEd(){if(!ed.n.trim())return toast('Dê um nome à receita');if(ed.ws.some(w=>!w.i.length))return toast('Inclua ingredientes em todos os pesos');
+const rec={id:ed.id||'u'+Date.now(),n:ed.n.trim(),c:[ed.c],q:false,u:1,pre:'',ex:[],w:ed.ws.map(w=>[w.l,w.i])},L2=LS.get('mp_custom',[]),i=L2.findIndex(x=>x.id==rec.id);i>=0?L2[i]=rec:L2.push(rec);LS.set('mp_custom',L2);location.hash='#/r/'+rec.id}
+route();
+try{const l=document.createElement('link');l.rel='icon';l.href='data:image/svg+xml,'+encodeURIComponent(LOGO);document.head.appendChild(l)}catch(e){}
+</script></body></html>
